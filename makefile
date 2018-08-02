@@ -3,7 +3,7 @@ test-xform-test typical-sphinx-setup open-docs readme-to-docs \
 build-docs-no-open build-docs docs-push-production docs-push-staging \
 docs-push create-docs docs-create docs-build docs test-unit-tests \
 test-files-to-static-doc-files push-docs push-docs-staging docs-open \
-push-docs-production
+push-docs-production get-latest-jar run build-run run-only
 
 # Setup
 setup-pyxform:
@@ -66,3 +66,19 @@ docs-open: open-docs
 push-docs: docs-push
 push-docs-staging: docs-push-staging
 push-docs-production: docs-push-production
+
+# Run - TODO: Should be able to pass arguments.
+get-latest-jar:
+	(cd ../javarosa/ && \
+	gradle build && \
+	gradle jar && \
+	cp build/libs/*.jar ../xform-test/xform_test/bin/*.jar)
+
+run-only:
+	python3 -m xform_test /Users/joeflack4/projects/xform-test/test/files/XformTest/example_output/XformTest1.xml
+
+build-run:
+	make get-latest-jar && \
+	make run-only
+
+run: build-run
