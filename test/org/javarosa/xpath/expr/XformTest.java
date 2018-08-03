@@ -32,7 +32,7 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 import static org.javarosa.test.utils.ResourcePathHelper.r;
 
-public class XformTest {
+public class XFormTest {
     private FormDef formDef;
     private FormEntryController formEntryController;
 

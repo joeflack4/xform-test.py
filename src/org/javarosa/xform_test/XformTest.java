@@ -15,6 +15,7 @@
  */
 package org.javarosa.xform_test;
 
+
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.ItemsetBinding;
 import org.javarosa.core.model.SelectChoice;
@@ -22,33 +23,61 @@ import org.javarosa.core.model.data.SelectOneData;
 import org.javarosa.core.model.data.StringData;
 import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.core.model.instance.InstanceInitializationFactory;
-//import org.javarosa.xform_test.FormParseInit;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryModel;
 import org.javarosa.form.api.FormEntryPrompt;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+//import static org.javarosa.xform_test.ResourcePathHelper.r;
+
+// For debugging
+//import java.net.URL;
+//import java.net.URLClassLoader;
+
+//import org.javarosa.xform_test.FormParseInit;
 //import org.junit.Before;
 //import org.junit.Test;
 //
 //import static junit.framework.TestCase.assertEquals;
-import static org.javarosa.xform_test.ResourcePathHelper.r;
 
-public class XformTest {
+public class XFormTest {
     private FormDef formDef;
     private FormEntryController formEntryController;
 
-    public void setUp() {
-        FormParseInit fpi = new FormParseInit(r("relative-current-ref-itemset-nodeset.xml"));
+    public static void main(String[] args) {
+        // System.out.println(args[0]);
+//        XFormTester xFormTester = new XFormTester();
+//        xFormTester.setUp(args[0]);
+
+//        ClassLoader cl = ClassLoader.getSystemClassLoader();
+//        URL[] urls = ((URLClassLoader)cl).getURLs();
+//        System.out.printf("class path is as follows: ");
+//        for(URL url: urls){
+//            System.out.println(url.getFile());
+//        }
+
+        XFormTest xFormTest = new XFormTest();
+        xFormTest.setUp(args[0]);
+    }
+
+    public void setUp(String xmlFilePath) {
+        Path xmlFilePath2 = Paths.get(xmlFilePath);
+        FormParseInit fpi = new FormParseInit(xmlFilePath2);
         formDef = fpi.getFormDef();
+        // TODO: Stuck here; error saying no 'storage factory'
         formDef.initialize(true, new InstanceInitializationFactory());
         FormEntryModel formEntryModel = new FormEntryModel(formDef);
         formEntryController = new FormEntryController(formEntryModel);
+        System.out.print("happy joy time");
     }
 
     /**
      * current() in an itemset nodeset expression should refer to the select node. This is verified by building an
      * itemset from a repeat which is a sibling of the select.
      */
-//    @Test
+    // @Test
     public void current_in_itemset_nodeset_should_refer_to_node() {
         // don't know how to jump to repeat directly so jump to following question and step backwards
         formEntryController.jumpToFirstQuestionWithName("selected_person");
@@ -72,13 +101,13 @@ public class XformTest {
         ItemsetBinding dynamicChoices = personPrompt.getQuestion().getDynamicChoices();
 
         SelectChoice personChoice = dynamicChoices.getChoices().get(1);
-//        assertEquals("Janet", personPrompt.getSelectChoiceText(personChoice));
+        // assertEquals("Janet", personPrompt.getSelectChoiceText(personChoice));
 
         SelectOneData personSelection = new SelectOneData(new Selection(personChoice));
         formEntryController.answerQuestion(personSelection, true);
 
         SelectOneData personSelectionValue = (SelectOneData) formDef.getFirstDescendantWithName("selected_person")
-                .getValue();
-//        assertEquals("2", personSelectionValue.getDisplayText());
+            .getValue();
+        // assertEquals("2", personSelectionValue.getDisplayText());
     }
 }
