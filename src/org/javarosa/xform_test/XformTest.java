@@ -59,7 +59,10 @@ public class XFormTest {
 //        }
 
         XFormTest xFormTest = new XFormTest();
-        xFormTest.setUp(args[0]);
+        xFormTest.setUp(args[0]);  // This should work.
+        // TODO: DEBUGGING
+//        xFormTest.setUp("/Users/joeflack4/projects/xform-test/test/files/XformTest/example_output/XformTest1.xml");
+//        xFormTest.setUp("/Users/joeflack4/projects/javarosa/resources/simple-form.xml");
     }
 
     public void setUp(String xmlFilePath) {
