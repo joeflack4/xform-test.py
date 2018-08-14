@@ -15,5 +15,9 @@ target
 secrets.xml
 
 # logging
-logback.xml
-logback-test.xml
+# Should be ignored for javarosa, but not for xform-test
+#logback.xml
+#logback-test.xml
+
+# OS X
+.DS_Store

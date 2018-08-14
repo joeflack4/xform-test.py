@@ -56,7 +56,8 @@ import org.javarosa.xpath.expr.XPathStringLiteral;
  * An element of a FormInstance.
  *
  * TreeElements represent an XML node in the instance. It may either have a value (e.g., <name>Drew</name>),
- * a number of TreeElement children (e.g., <meta><device /><timestamp /><user_id /></meta>), or neither (e.g.,
+ * a number of TreeElement
+ * (e.g., <meta><device /><timestamp /><user_id /></meta>), or neither (e.g.,
  * <empty_node />)
  *
  * TreeElements can also represent attributes. Attributes are unique from normal elements in that they are
@@ -460,6 +461,10 @@ import org.javarosa.xpath.expr.XPathStringLiteral;
 
     /**
      * get value of the bind attribute with namespace:name' in the list
+     *
+     * Example
+     *   Accessing a bind simply called "assertion" (has no namespace); can be called as follows:
+     *   `getBindAttributeValue(null, "assertion");`
      *
      * @return String
      */

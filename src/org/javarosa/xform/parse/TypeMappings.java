@@ -27,7 +27,6 @@ class TypeMappings {
 
     private static HashMap<String, Integer> typeMappings = new HashMap<String, Integer>() {{
 
-        //xsd
         put("string",       DATATYPE_TEXT);
         put("integer",      DATATYPE_INTEGER);
         put("long",         DATATYPE_LONG);

@@ -73,12 +73,13 @@ public class FormEntryController {
 
 
     /**
-     * Attempts to save the answer at the specified FormIndex into the
-     * datamodel.
+     * Attempts to save the answer at the specified FormIndex into the datamodel.
      *
-     * @param index
-     * @param data
-     * @return OK if save was successful, error if a constraint was violated.
+     * @param index The current question/prompt that is being evaluated.
+     * @param data The data to attempt to answer the question with.
+     * @return int value of ANSWER_REQUIRED_BUT_EMPTY || ANSWER_CONSTRAINT_VIOLATED || ANSWER_OK
+     *
+     * Side effects: Mutates 'index' by setting its value property to the value of 'data'.
      */
     public int answerQuestion(FormIndex index, IAnswerData data, boolean midSurvey) {
         QuestionDef q = model.getQuestionPrompt(index).getQuestion();

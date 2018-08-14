@@ -987,6 +987,9 @@ public class FormDef implements IFormElement, Localizable, Persistable, IMetaDat
      * @param itemset The binding for an itemset, where the choices will be populated
      * @param curQRef A reference to the current question's element, which will be
      *                used to determine the values to be chosen from.
+     *
+     * Side effects: Mutates the itemset object passed by clearing any choices currently on it, and populating with
+     * choices based on the question reference curQRef that was passed.
      */
     public void populateDynamicChoices(ItemsetBinding itemset, TreeReference curQRef) {
         getEventNotifier().publishEvent(new Event("Dynamic choices", new EvaluationResult(curQRef, null)));
@@ -1544,6 +1547,12 @@ public class FormDef implements IFormElement, Localizable, Persistable, IMetaDat
         }
     }
 
+    /**
+     * Returns the given question definition related to a form node reference.
+     * @param ref Reference to a form node.
+     * @param fe IFormElement, typically a FormDef, often 'this'.
+     * @return The question definition.
+     */
     public static QuestionDef findQuestionByRef(TreeReference ref, IFormElement fe) {
         if (fe instanceof FormDef) {
             ref = ref.genericize();

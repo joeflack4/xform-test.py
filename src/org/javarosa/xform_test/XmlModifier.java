@@ -95,13 +95,13 @@ public class XmlModifier {
             }
         }
         // Print warnings
-        System.out.println("\nWARNING: Xform-test doesn't support the following features on following attributes.");
+        System.out.println("WARNING: Xform-test doesn't support the following features on following attributes.");
         String attributeFeatures =
-            "  calculate:\n" +
-            "    pulldata()\n";
+            "  " +attributeName+":\n" +
+            "    "+find+"\n";
         System.out.println(attributeFeatures);
         System.out.println("Any nodes containing these features on corresponding attributes have had attribute values" +
-            " set to an empty string.");
+            " set to the following value: "+replace+".");
         System.out.println("The following nodes were affected: ");
         for (String xPath : xPathsToModifiedNodes) {
             System.out.println(xPath);
