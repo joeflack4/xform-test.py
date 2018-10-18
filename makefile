@@ -1,34 +1,37 @@
-.PHONY: test-pyxform test setup-pyxform setup test-survey-instance \
-test-xform-test typical-sphinx-setup open-docs readme-to-docs \
+SRC_XLSX=test/static/XformTest/input/XFormTest1.xlsx
+TEST_FILE=test/static/XformTest/output/XFormTest1.xml
+
+.PHONY: typical-sphinx-setup open-docs readme-to-docs \
 build-docs-no-open build-docs docs-push-production docs-push-staging \
 docs-push create-docs docs-create docs-build docs test-unit-tests \
 test-files-to-static-doc-files push-docs push-docs-staging docs-open \
-push-docs-production get-latest-jar run build-run run-only
+push-docs-production get-latest-jar run build-run run-only \
+build jar xform-test xform-test-only test run test-only run-only
 
-# Setup
-setup-pyxform:
-	(cd converters/pyxform && \
-	python3 setup.py develop)
-setup: setup-pyxform
-
+# TODO: Should be able to pass arguments.
 # Test
-test-pyxform:
-	(cd converters/pyxform && \
-	python3 pyxform/xls2xform.py ../test/1/input/form1.xlsx \
-	../test/1/output/form1.xml)
-test-survey-instance:
-	python3 converters/test/2/test_SurveyInstance.py
-test-xform-test:
-	(cd converters/pyxform && \
-	python3 pyxform/xls2xform.py ../test/XformTest/input/XformTest1.xlsx \
-	../test/XformTest/output/XformTest1.xml)
 test-unit-tests:
 	python3 test/test.py
+update-xml:
+	xls2xform ${SRC_XLSX} ${TEST_FILE}
+xform-test-only:
+	java -jar build/libs/opendatakit-javarosa-2.11.0.jar ${TEST_FILE}
+xform-test:
+	make update-xml; \
+	make build; \
+    make jar; \
+    make xform-test-only
+test: xform-test
+test-only: xform-test-only
+run: xform-test
+run-only: xform-test-only
 
-#test: test-pyxform
-#test: test-survey-instance
-#test: test-xform-test
-test: test-unit-tests
+# Build
+build:
+	gradle build
+jar:
+	gradle jar; \
+	cp build/libs/*.jar ../xform-test/xform_test/bin/*.jar
 
 # Docs
 typical-sphinx-setup:
@@ -66,19 +69,3 @@ docs-open: open-docs
 push-docs: docs-push
 push-docs-staging: docs-push-staging
 push-docs-production: docs-push-production
-
-# Run - TODO: Should be able to pass arguments.
-get-latest-jar:
-	(cd ../javarosa/ && \
-	gradle build && \
-	gradle jar && \
-	cp build/libs/*.jar ../xform-test/xform_test/bin/*.jar)
-
-run-only:
-	python3 -m xform_test /Users/joeflack4/projects/xform-test/test/files/XformTest/example_output/XformTest1.xml
-
-build-run:
-	make get-latest-jar && \
-	make run-only
-
-run: build-run
